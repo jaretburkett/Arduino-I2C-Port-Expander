@@ -1,0 +1,6 @@
+digitalRead	KEYWORD1
+digitalReadPullup	KEYWORD1
+digitalWrite	KEYWORD1
+analogRead	KEYWORD1
+analogWrite	KEYWORD1
+EXPAND KEYWORD2
