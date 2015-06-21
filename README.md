@@ -1,10 +1,11 @@
 # Arduino I2C Port Expander #
 
-This is a library to turn any Arduino compatible microcontroller into the ultimate I2C port expander. 
+This is a library to turn any Arduino compatible microcontroller into the ultimate I2C port expander. **Now with ATtiny support.**
 
 ## Why is this needed? ##
 
 There are a lot of port expanders out there. I always have the same problem with them. **They only do one thing**. One can read or write digital inputs. Another can write pwm. Still anothher can read analog inputs. They do their own thing well but they can only do that one thing. Most microcontrollers have multiple capabilities, including the microcontroller on Arduino. It has all of these functions and much much more. This makes it the perfect cantidate for the ultimate port expander for any project.
+
 
 ## Getting Started ##
 
@@ -33,4 +34,20 @@ Returns analog read val as int. Must call slaves digital pin number not its anal
     io.analogWrite(pin, 0-255);
 Writes pwm to pin. Must be a pwm capable pin. 
 
+## Supported Microcontrollers ##
 
+This library should support all microcontrollers that work with Arduino and can use the Wire library. 
+
+For ATtiny microcontrollers, you need to have the [TinyWireS](https://github.com/rambo/TinyWire "TinyWireS") library. Currently, ATtiny microcontrollers only work as a port expander, not a master. It should be easy to port over, but I do not see the point.
+
+The included ATtiny example has been tested with the ATtiny84 using 8mhz internal clock, but should work with all versions supported by [TinyWireS](https://github.com/rambo/TinyWire "TinyWireS").
+
+For board support of the ATtiny microcontrollers, I recommend [Damellis' ATtiny package](https://github.com/damellis/attiny/ "Damellis' ATtiny package").
+
+## Future Plans ##
+- Add Soft PWM to enable PWM on all pins
+- Add Character LCD support
+- Add Sevo Capability
+- Add Resistive Touchscreen Support
+- Make Raspberry Pi library
+- Make it self aware and take over the human race (unlikely)
