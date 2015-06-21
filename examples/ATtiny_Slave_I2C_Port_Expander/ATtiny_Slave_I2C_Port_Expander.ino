@@ -9,6 +9,10 @@ communicate to your new I2C port expander.
 
 Be sure to make the slave id compatible with your master.
 
+ATTiny note:
+To use this code with the ATtiny, you will need the TinyWireS library from here.
+https://github.com/rambo/TinyWire
+
 This code is released under a MIT license. 
 Created by Jaret Burkett
 */
@@ -17,31 +21,46 @@ Created by Jaret Burkett
 // can be 0x01 - 0xff
 const uint8_t SlaveDeviceId = 0x01;
 
-uint16_t receivedPacket[10]; 
-#include <Wire.h>
+#include <TinyWireS.h>          //the ATTiny Wire library
+#ifndef TWI_RX_BUFFER_SIZE
+	#define TWI_RX_BUFFER_SIZE ( 16 )
+#endif
 
 byte bytesSent = 0;
 byte buffer[2];
 
 uint16_t returninfo;
 
+// buffer for received command.
+uint8_t receivedPacket[10]; 
  
 void setup(){
-	Wire.begin(SlaveDeviceId);      // join i2c bus with Slave ID
-	Wire.onReceive(receiveDataPacket); // register talk event
-	Wire.onRequest(slavesRespond);  // register callback event
+	TinyWireS.begin(SlaveDeviceId);      // join i2c bus with Slave ID
+	TinyWireS.onReceive(receiveDataPacket); // register talk event
+	TinyWireS.onRequest(slavesRespond);  // register callback event
 }
   
 void loop(){
-// no need for loop. Requests call internal interrupt.
+	TinyWireS_stop_check();
 }
 
-void receiveDataPacket(int howMany){
-	// get bytes from i2c
-	bytesSent = 0; // clear byte counter
-	for(byte i=0; i < howMany; i++){
-		receivedPacket[i] = Wire.read();
-	} 
+void receiveDataPacket(byte howMany){
+  // get bytes from i2c
+  bytesSent = 0; // clear byte counter
+	  if (TinyWireS.available()){  
+		if (howMany < 1)
+		  {   // Sanity-check
+			  return;
+		  }
+		  if (howMany > TWI_RX_BUFFER_SIZE)
+		  {   // Also insane number
+			  return;
+		  }
+		// get bytes from i2c
+		for(byte i=0; i < howMany; i++){
+		  receivedPacket[i] = TinyWireS.receive();
+		} 
+	  }
 /*
   receivedPacket[0] = method
 */
@@ -93,11 +112,12 @@ void slavesRespond(){
 	if(bytesSent == 0){ //send first byte
 		buffer[0] = returninfo >> 8;
 		buffer[1] = returninfo & 0xff;
-		Wire.write(buffer[0]);
+		TinyWireS.send(buffer[0]);// return response to last command
 		bytesSent++;
 	} else if(bytesSent == 1){ // send second byte
-		Wire.write(buffer[1]);
+		TinyWireS.send(buffer[1]);// return response to last command
 		bytesSent = 0; // clear byte counter
 	}
 }
  
+

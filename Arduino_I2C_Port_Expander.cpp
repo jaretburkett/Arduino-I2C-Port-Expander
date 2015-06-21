@@ -63,19 +63,18 @@ void EXPAND::sendDataPacket(){
 
 int EXPAND::receiveResponse(){
   unsigned int receivedValue;
-  unsigned long start = millis();
-  int available = Wire.requestFrom(_addr, (byte)2);
-  //Wire.endTransmission(true);
-  if(available == 2)
+  int available = Wire.requestFrom(_addr, (byte)1);
+  byte buffer[2];
+  if(available == 1)
   {
-    receivedValue = Wire.read() << 8 | Wire.read(); // combine two bytes into integer
-    
+     buffer[0] = Wire.read();
   }
-  else
+  available = Wire.requestFrom(_addr, (byte)1);
+  if(available == 1)
   {
-    Serial.print("ERROR: Unexpected number of bytes received - ");
-    Serial.println(available);
+     buffer[1] = Wire.read();
   }
+  receivedValue = buffer[0] << 8 | buffer[1];
   
   return receivedValue;  
 }
