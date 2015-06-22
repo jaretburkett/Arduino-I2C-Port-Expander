@@ -17,8 +17,13 @@ class EXPAND {
     int digitalReadPullup(byte pin);
     void analogWrite(byte pin,byte val);
     int analogRead(byte pin);
+	void touchscreenOn();
+	int touchscreenReadX();
+	int touchscreenReadY();
+	int touchscreenReadZ();
     void sendDataPacket();
     int receiveResponse();
+	
   private:
     uint8_t _addr;
 };

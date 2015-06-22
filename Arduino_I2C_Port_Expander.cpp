@@ -54,6 +54,33 @@ int EXPAND::analogRead(byte pin){
   return received;
 }
 
+void EXPAND::touchscreenOn(){
+  io_DataPacket[0] = 20;    // method
+  sendDataPacket();
+  int received = receiveResponse();
+}
+
+int EXPAND::touchscreenReadX(){
+  io_DataPacket[0] = 21;    // method
+  sendDataPacket();
+  int received = receiveResponse();
+  return received;
+}
+
+int EXPAND::touchscreenReadY(){
+  io_DataPacket[0] = 22;    // method
+  sendDataPacket();
+  int received = receiveResponse();
+  return received;
+}
+
+int EXPAND::touchscreenReadZ(){
+  io_DataPacket[0] = 23;    // method
+  sendDataPacket();
+  int received = receiveResponse();
+  return received;
+}
+
 void EXPAND::sendDataPacket(){
   Wire.beginTransmission(_addr);
   Wire.write(io_DataPacket, 3);

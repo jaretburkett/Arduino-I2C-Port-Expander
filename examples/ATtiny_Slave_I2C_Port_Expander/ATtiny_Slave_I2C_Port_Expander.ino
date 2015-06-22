@@ -1,4 +1,5 @@
 /*
+ 
 For detailed instructions. Please visit this project on Github.
 https://github.com/jaretburkett/Arduino-I2C-Port-Expander
 
@@ -21,6 +22,19 @@ Created by Jaret Burkett
 // can be 0x01 - 0xff
 const uint8_t SlaveDeviceId = 0x01;
 
+// for touchscreen
+#define YP 0  // must be an analog pin
+#define XM 1  // must be an analog pin
+#define YM 9   // can be a digital pin
+#define XP 10   // can be a digital pin
+
+#include "ts.h"
+
+TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
+uint16_t xpos = 0;
+uint16_t ypos= 0;
+uint16_t zpos = 0;
+
 #include <TinyWireS.h>          //the ATTiny Wire library
 #ifndef TWI_RX_BUFFER_SIZE
 	#define TWI_RX_BUFFER_SIZE ( 16 )
@@ -28,6 +42,8 @@ const uint8_t SlaveDeviceId = 0x01;
 
 byte bytesSent = 0;
 byte buffer[2];
+
+bool useTS = false;
 
 uint16_t returninfo;
 
@@ -42,6 +58,13 @@ void setup(){
   
 void loop(){
 	TinyWireS_stop_check();
+  // if touchscreen has been activated
+  if(useTS == true){
+    TSPoint p = ts.getPoint();
+     xpos = p.x;
+     ypos = p.y;
+     zpos = p.z;
+  }
 }
 
 void receiveDataPacket(byte howMany){
@@ -107,6 +130,21 @@ void slavesRespond(){
 		  */
 		  returninfo = analogRead(receivedPacket[1]);
 		  break;
+	    case 20: // turn on touchscreen
+	      returninfo = 1;
+	      useTS = true;
+	      break;
+	    case 21: // Touchscreen Read x
+	      returninfo = xpos;
+	      break;
+	    case 22: // Touchscreen Read y
+	      returninfo = ypos;
+	      break;
+	    case 23: // Touchscreen Read z
+	      returninfo = zpos;
+	      break;
+	    default:
+	      returninfo = 99999;
 		}
 	}
 	if(bytesSent == 0){ //send first byte

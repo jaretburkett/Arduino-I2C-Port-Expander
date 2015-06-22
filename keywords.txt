@@ -3,4 +3,8 @@ digitalReadPullup	KEYWORD1
 digitalWrite	KEYWORD1
 analogRead	KEYWORD1
 analogWrite	KEYWORD1
+touchscreenOn	KEYWORD1
+touchscreenReadX	KEYWORD1
+touchscreenReadY	KEYWORD1
+touchscreenReadZ	KEYWORD1
 EXPAND KEYWORD2

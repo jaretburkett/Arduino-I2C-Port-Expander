@@ -17,11 +17,26 @@ Created by Jaret Burkett
 // can be 0x01 - 0xff
 const uint8_t SlaveDeviceId = 0x01;
 
+// for touchscreen
+#define YP A0  // must be an analog pin, use "An" notation!
+#define XM A1  // must be an analog pin, use "An" notation!
+#define YM 8   // can be a digital pin
+#define XP 9   // can be a digital pin
+
+#include "ts.h"
+
+TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
+uint16_t xpos = 0;
+uint16_t ypos= 0;
+uint16_t zpos = 0;
+
 uint16_t receivedPacket[10]; 
 #include <Wire.h>
 
 byte bytesSent = 0;
 byte buffer[2];
+
+bool useTS = false;
 
 uint16_t returninfo;
 
@@ -31,9 +46,14 @@ void setup(){
 	Wire.onReceive(receiveDataPacket); // register talk event
 	Wire.onRequest(slavesRespond);  // register callback event
 }
-  
-void loop(){
-// no need for loop. Requests call internal interrupt.
+
+void loop(){  
+	if(useTS == true){
+    	TSPoint p = ts.getPoint();
+     	xpos = p.x;
+     	ypos = p.y;
+     	zpos = p.z;
+  	}
 }
 
 void receiveDataPacket(int howMany){
@@ -88,6 +108,21 @@ void slavesRespond(){
 		  */
 		  returninfo = analogRead(receivedPacket[1]);
 		  break;
+		case 20: // turn on touchscreen
+	      returninfo = 1;
+	      useTS = true;
+	      break;
+	    case 21: // Touchscreen Read x
+	      returninfo = xpos;
+	      break;
+	    case 22: // Touchscreen Read y
+	      returninfo = ypos;
+	      break;
+	    case 23: // Touchscreen Read z
+	      returninfo = zpos;
+	      break;
+	    default:
+	      returninfo = 99999;
 		}
 	}
 	if(bytesSent == 0){ //send first byte
