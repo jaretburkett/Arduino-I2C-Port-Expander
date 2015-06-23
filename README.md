@@ -3,7 +3,7 @@
 This is a library to turn any Arduino compatible microcontroller into the ultimate I2C port expander. **Now with ATtiny support.**
 
 ## Features  ##
-### [Functions](#functions) ###
+### [Functions](#functions-1) ###
 
 - Digital Write
 - Digital Read
@@ -11,7 +11,7 @@ This is a library to turn any Arduino compatible microcontroller into the ultima
 - Analog Read
 - Analog Write (PWM)
 
-###[Special Functions](#special-functions)###
+###[Special Functions](#special-functions-1)###
 
 - 4 wire resistive touchscreen controller
 
@@ -62,6 +62,7 @@ For ATtiny microcontrollers, you need to have the [TinyWireS](https://github.com
 The included ATtiny example has been tested with the ATtiny84 using 8mhz internal clock, but should work with all versions supported by [TinyWireS](https://github.com/rambo/TinyWire "TinyWireS").
 
 For board support of the ATtiny microcontrollers, I recommend [Damellis' ATtiny package](https://github.com/damellis/attiny/ "Damellis' ATtiny package").
+
 
 ## Future Plans ##
 - Add Soft PWM to enable PWM on all pins
