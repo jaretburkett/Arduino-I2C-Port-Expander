@@ -32,13 +32,13 @@ Now, connect both the master and the slave together. They must share a ground. H
 
 When you initialize this library on the master, you have to give it a name. For the code examples, we will assume you named it "io".
 
-- `io.digitalWrite(pin, HIGH | LOW);` - Writes pin high or low
+- `io.digitalWrite(pin, HIGH | LOW);` - Writes pin `HIGH` or `LOW`
 
-- `io.digitalRead(pin);` - Returns pin value as integer. 0 for low or 1 for high
+- `io.digitalRead(pin);` - Returns pin value as an `int`. 0 for low or 1 for high
 
 - `io.digitalReadPullup(pin);` - Same as digital read, but activates the  internal pullup resistor first. 
 
-- `io.analogRead(pin);` - Returns analog read val as int. Must call slaves digital pin number not its analog pin. So use 14 instead of A0.
+- `io.analogRead(pin);` - Returns analog read value as `int`. Must call slaves digital pin number not its analog pin. So use `14` instead of `A0`.
 
 - `io.analogWrite(pin, 0-255);` - Writes pwm to pin. Must be a pwm capable pin. 
 
@@ -67,6 +67,5 @@ For board support of the ATtiny microcontrollers, I recommend [Damellis' ATtiny 
 - Add Soft PWM to enable PWM on all pins
 - Add Character LCD support
 - Add Sevo Capability
-- Add Resistive Touchscreen Support
 - Make Raspberry Pi library
 - Make it self aware and take over the human race (unlikely)
