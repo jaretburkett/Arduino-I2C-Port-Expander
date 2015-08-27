@@ -8,7 +8,7 @@ byte io_value;
 //<<constructor>>
 EXPAND::EXPAND(uint8_t addr){
   _addr = addr;
-  Wire.begin();
+  //Wire.begin();
 }
 
 //<<destructor>>

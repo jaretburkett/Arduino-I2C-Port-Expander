@@ -39,6 +39,7 @@ EXPAND io(0x01);  		//initialize an instance of the class with address 0x01
 
 void setup()
 {
+  Wire.begin();
   Serial.begin(57600);  // start serial for output
   while(!Serial){}		// wait for serial port. Only needed on Leonardo based boards
 }
